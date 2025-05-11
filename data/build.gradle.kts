@@ -4,6 +4,10 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
 }
+hilt {
+    // disable the JavaPoet-backed aggregating step
+    enableAggregatingTask = false
+}
 
 android {
     namespace = "org.lightscout.data"
@@ -42,6 +46,7 @@ dependencies {
     
     // Hilt
     implementation(libs.hilt.android)
+    testImplementation(libs.hilt.android.testing)
     kapt(libs.hilt.compiler)
     
     // Retrofit
@@ -54,6 +59,16 @@ dependencies {
     
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlin.test.junit)
+    
+    // Hilt Testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
