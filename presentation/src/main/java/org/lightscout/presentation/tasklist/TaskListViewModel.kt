@@ -72,6 +72,14 @@ constructor(
                 task?.let {
                     val updatedTask = it.copy(isCompleted = !it.isCompleted)
                     updateTaskUseCase(updatedTask)
+                    _state.update { currentState ->
+                        currentState.copy(
+                                tasks =
+                                        currentState.tasks.map { task ->
+                                            if (task.id == taskId) updatedTask else task
+                                        }
+                        )
+                    }
                     _effect.emit(TaskListEffect.TaskUpdated)
                 }
             } catch (e: Exception) {
@@ -84,6 +92,9 @@ constructor(
         viewModelScope.launch {
             try {
                 deleteTaskUseCase(taskId)
+                _state.update { currentState ->
+                    currentState.copy(tasks = currentState.tasks.filter { it.id != taskId })
+                }
                 _effect.emit(TaskListEffect.TaskDeleted)
             } catch (e: Exception) {
                 _effect.emit(TaskListEffect.ShowError(e.message ?: "Failed to delete task"))
@@ -94,7 +105,10 @@ constructor(
     private fun createTask(title: String, description: String) {
         viewModelScope.launch {
             try {
-                createTaskUseCase(title, description)
+                val newTask = createTaskUseCase(title, description)
+                _state.update { currentState ->
+                    currentState.copy(tasks = currentState.tasks + newTask)
+                }
                 _effect.emit(TaskListEffect.TaskCreated)
             } catch (e: Exception) {
                 _effect.emit(TaskListEffect.ShowError(e.message ?: "Failed to create task"))
@@ -105,7 +119,15 @@ constructor(
     private fun updateTask(task: Task) {
         viewModelScope.launch {
             try {
-                updateTaskUseCase(task)
+                val updatedTask = updateTaskUseCase(task)
+                _state.update { currentState ->
+                    currentState.copy(
+                            tasks =
+                                    currentState.tasks.map { currentTask ->
+                                        if (currentTask.id == task.id) updatedTask else currentTask
+                                    }
+                    )
+                }
                 _effect.emit(TaskListEffect.TaskUpdated)
             } catch (e: Exception) {
                 _effect.emit(TaskListEffect.ShowError(e.message ?: "Failed to update task"))
