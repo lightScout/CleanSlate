@@ -22,12 +22,14 @@ class TaskRepositoryImpl @Inject constructor(private val apiService: TaskApiServ
         emit(task)
     }
 
-    override suspend fun createTask(task: Task) {
-        apiService.createTask(task.toDto())
+    override suspend fun createTask(task: Task): Task {
+        val createdTask = apiService.createTask(task.toDto())
+        return createdTask.toDomain()
     }
 
-    override suspend fun updateTask(task: Task) {
-        apiService.updateTask(task.id, task.toDto())
+    override suspend fun updateTask(task: Task): Task {
+        val updatedTask = apiService.updateTask(task.id, task.toDto())
+        return updatedTask.toDomain()
     }
 
     override suspend fun deleteTask(id: String) {
