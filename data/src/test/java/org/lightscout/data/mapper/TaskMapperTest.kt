@@ -11,14 +11,14 @@ class TaskMapperTest {
     fun `Given a TaskDto, When mapped to domain model, Then all fields are correctly mapped`() {
         // Given
         val taskDto =
-                TaskDto(
-                        id = "1",
-                        title = "Test Task",
-                        description = "Test Description",
-                        isCompleted = true,
-                        createdAt = 1234567890,
-                        updatedAt = 1234567890
-                )
+            TaskDto(
+                id = "1",
+                title = "Test Task",
+                description = "Test Description",
+                isCompleted = true,
+                createdAt = 1234567890,
+                updatedAt = 1234567890
+            )
 
         // When
         val task = taskDto.toDomain()
@@ -36,14 +36,14 @@ class TaskMapperTest {
     fun `Given a domain Task, When mapped to DTO, Then all fields are correctly mapped`() {
         // Given
         val task =
-                Task(
-                        id = "1",
-                        title = "Test Task",
-                        description = "Test Description",
-                        isCompleted = true,
-                        createdAt = 1234567890,
-                        updatedAt = 1234567890
-                )
+            Task(
+                id = "1",
+                title = "Test Task",
+                description = "Test Description",
+                isCompleted = true,
+                createdAt = 1234567890,
+                updatedAt = 1234567890
+            )
 
         // When
         val taskDto = task.toDto()
