@@ -11,7 +11,7 @@ hilt {
 
 android {
     namespace = "org.lightscout.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 28
@@ -41,8 +41,9 @@ android {
 dependencies {
     implementation(project(":domain"))
     
-    // Core
+    // Core Android
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     
     // Hilt
     implementation(libs.hilt.android)
@@ -56,14 +57,15 @@ dependencies {
     
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
     
     // Testing
     testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
-    testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
     
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)

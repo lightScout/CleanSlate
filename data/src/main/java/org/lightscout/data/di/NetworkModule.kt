@@ -1,15 +1,16 @@
 package org.lightscout.data.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.lightscout.data.remote.TaskApiService
-import org.lightscout.data.repository.TaskRepositoryImpl
-import org.lightscout.domain.repository.TaskRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -24,16 +25,25 @@ object NetworkModule {
                 .addInterceptor(
                         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
                 )
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideGson(): Gson {
+        return GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("https://api.example.com/")
+                .baseUrl("https://api.example.com/") // TODO: Replace with actual API URL
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
     }
 
@@ -41,11 +51,5 @@ object NetworkModule {
     @Singleton
     fun provideTaskApiService(retrofit: Retrofit): TaskApiService {
         return retrofit.create(TaskApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTaskRepository(apiService: TaskApiService): TaskRepository {
-        return TaskRepositoryImpl(apiService)
     }
 }

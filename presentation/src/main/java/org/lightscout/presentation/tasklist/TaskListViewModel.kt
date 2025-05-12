@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import org.lightscout.domain.model.Task
 import org.lightscout.domain.usecase.CreateTaskUseCase
 import org.lightscout.domain.usecase.DeleteTaskUseCase
+import org.lightscout.domain.usecase.GetTaskByIdUseCase
 import org.lightscout.domain.usecase.GetTasksUseCase
 import org.lightscout.domain.usecase.UpdateTaskUseCase
 
@@ -26,6 +27,7 @@ class TaskListViewModel
 @Inject
 constructor(
         private val getTasksUseCase: GetTasksUseCase,
+        private val getTaskByIdUseCase: GetTaskByIdUseCase,
         private val createTaskUseCase: CreateTaskUseCase,
         private val updateTaskUseCase: UpdateTaskUseCase,
         private val deleteTaskUseCase: DeleteTaskUseCase

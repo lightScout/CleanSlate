@@ -1,12 +1,12 @@
 package org.lightscout.data.repository
 
+import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.lightscout.data.mock.MockTaskProvider
 import org.lightscout.domain.model.Task
 import org.lightscout.domain.repository.TaskRepository
-import java.time.Instant
 
 class MockTaskRepository @Inject constructor() : TaskRepository {
     private val tasks = mutableListOf<Task>().apply { addAll(MockTaskProvider.getMockTasks()) }
