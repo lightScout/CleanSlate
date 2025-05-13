@@ -66,9 +66,7 @@ fun TaskDetailScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is TaskDetailEffect.NavigateBack -> onNavigateBack()
-                is TaskDetailEffect.ShowError -> {
-                    // Show error message
-                }
+                is TaskDetailEffect.ShowError -> {}
                 else -> {}
             }
         }
@@ -175,7 +173,6 @@ fun TaskDetails(task: Task, onToggleCompletion: () -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Completion status
             Button(
                     onClick = onToggleCompletion,
                     modifier = Modifier.testTag(TaskDetailTestTags.COMPLETION_CHECKBOX)
@@ -217,7 +214,6 @@ fun TaskEditForm(task: Task, onSave: (String, String) -> Unit, onCancel: () -> U
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Buttons
         Box(modifier = Modifier.fillMaxWidth()) {
             TextButton(
                     onClick = onCancel,

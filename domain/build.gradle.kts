@@ -39,11 +39,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     
-    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     
-    // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit)
