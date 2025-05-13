@@ -1,15 +1,29 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file
 local.properties
+
+# IntelliJ IDEA / Android Studio
+*.iml
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Android build and native code
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Deprecated files
+/out/
