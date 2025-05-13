@@ -46,18 +46,27 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "2.0.0"
     }
+
+//    packaging {
+//        resources {
+//            excludes.add("META-INF/LICENSE.md")
+//            excludes.add("META-INF/LICENSE-notice.md")
+//            excludes.add("META-INF/LICENSE.txt")
+//            excludes.add("META-INF/NOTICE.txt")
+//        }
+//    }
 }
 
 dependencies {
     implementation(project(":presentation"))
     implementation(project(":domain"))
     implementation(project(":data"))
-    
+
     // Core Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    
+
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -66,22 +75,22 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
-    
+
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
-    
+
     // Retrofit & OkHttp
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-    
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
-    
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
@@ -89,11 +98,13 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
-    
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.mockk.android)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

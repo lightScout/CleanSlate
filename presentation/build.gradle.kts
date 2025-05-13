@@ -5,6 +5,9 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
 }
+hilt {
+    enableAggregatingTask = false
+}
 
 android {
     namespace = "org.lightscout.presentation"
@@ -13,7 +16,7 @@ android {
     defaultConfig {
         minSdk = 28
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.lightscout.presentation.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -26,6 +29,16 @@ android {
             )
         }
     }
+    
+    packaging {
+        resources {
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
+            excludes.add("META-INF/LICENSE.txt")
+            excludes.add("META-INF/NOTICE.txt")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -39,6 +52,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "2.0.0"
     }
+
 }
 
 dependencies {
@@ -75,10 +89,33 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
     
+    // Android test dependencies
+    androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.mockk.android)
+    
+    // Explicit Hilt testing dependencies
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler.v250)
+    
+    // Mockito for testing
+    androidTestImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.kotlin)
+    
+    androidTestImplementation(libs.kotlin.test)
+    
+    // Debug implementations for UI testing
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // UI Testing
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    // Mocking for tests
+    testImplementation(libs.mockk)
 }
