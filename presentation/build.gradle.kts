@@ -52,7 +52,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "2.0.0"
     }
-
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -99,7 +103,7 @@ dependencies {
     
     // Explicit Hilt testing dependencies
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler.v250)
+    kaptAndroidTest(libs.hilt.compiler)
     
     // Mockito for testing
     androidTestImplementation(libs.mockito.core)
