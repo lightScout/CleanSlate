@@ -1,5 +1,6 @@
 package org.lightscout.presentation.taskdetail
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,18 +13,21 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.lightscout.domain.model.Task
+import org.lightscout.presentation.components.ElevatedTopAppBar
 
 object TaskDetailTestTags {
     const val SCREEN = "task_detail_screen"
@@ -74,7 +79,7 @@ fun TaskDetailScreen(
 
     Scaffold(
             topBar = {
-                TopAppBar(
+                ElevatedTopAppBar(
                         title = {
                             Text(text = if (state.isEditing) "Edit Task" else "Task Details")
                         },
@@ -159,28 +164,61 @@ fun TaskDetailScreen(
 
 @Composable
 fun TaskDetails(task: Task, onToggleCompletion: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+    Card(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            border =
+                    if (task.isCompleted) {
+                        BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.secondary)
+                    } else null
+    ) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Text(
                     text = task.title,
                     style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = task.description, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                    text = task.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                     onClick = onToggleCompletion,
-                    modifier = Modifier.testTag(TaskDetailTestTags.COMPLETION_CHECKBOX)
+                    modifier = Modifier.testTag(TaskDetailTestTags.COMPLETION_CHECKBOX),
+                    colors =
+                            ButtonDefaults.buttonColors(
+                                    containerColor =
+                                            if (task.isCompleted)
+                                                    MaterialTheme.colorScheme.secondary
+                                            else MaterialTheme.colorScheme.primary
+                            )
             ) {
-                Checkbox(checked = task.isCompleted, onCheckedChange = { onToggleCompletion() })
+                Checkbox(
+                        checked = task.isCompleted,
+                        onCheckedChange = { onToggleCompletion() },
+                        colors =
+                                CheckboxDefaults.colors(
+                                        checkedColor =
+                                                if (task.isCompleted)
+                                                        MaterialTheme.colorScheme.secondary
+                                                else MaterialTheme.colorScheme.primary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimary,
+                                        checkmarkColor = MaterialTheme.colorScheme.onPrimary
+                                )
+                )
                 Text(
                         text = if (task.isCompleted) "Completed" else "Mark as completed",
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 8.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -197,7 +235,13 @@ fun TaskEditForm(task: Task, onSave: (String, String) -> Unit, onCancel: () -> U
                 value = title,
                 onValueChange = { title = it },
                 label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth().testTag(TaskDetailTestTags.TITLE_FIELD)
+                modifier = Modifier.fillMaxWidth().testTag(TaskDetailTestTags.TITLE_FIELD),
+                colors =
+                        OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                cursorColor = MaterialTheme.colorScheme.primary
+                        )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -209,7 +253,13 @@ fun TaskEditForm(task: Task, onSave: (String, String) -> Unit, onCancel: () -> U
                 modifier =
                         Modifier.fillMaxWidth()
                                 .height(200.dp)
-                                .testTag(TaskDetailTestTags.DESCRIPTION_FIELD)
+                                .testTag(TaskDetailTestTags.DESCRIPTION_FIELD),
+                colors =
+                        OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                cursorColor = MaterialTheme.colorScheme.primary
+                        )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -219,7 +269,11 @@ fun TaskEditForm(task: Task, onSave: (String, String) -> Unit, onCancel: () -> U
                     onClick = onCancel,
                     modifier =
                             Modifier.align(Alignment.CenterStart)
-                                    .testTag(TaskDetailTestTags.CANCEL_BUTTON)
+                                    .testTag(TaskDetailTestTags.CANCEL_BUTTON),
+                    colors =
+                            ButtonDefaults.textButtonColors(
+                                    contentColor = MaterialTheme.colorScheme.error
+                            )
             ) { Text("Cancel") }
 
             Button(
@@ -230,7 +284,11 @@ fun TaskEditForm(task: Task, onSave: (String, String) -> Unit, onCancel: () -> U
                     },
                     modifier =
                             Modifier.align(Alignment.CenterEnd)
-                                    .testTag(TaskDetailTestTags.SAVE_BUTTON)
+                                    .testTag(TaskDetailTestTags.SAVE_BUTTON),
+                    colors =
+                            ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                            )
             ) { Text("Save") }
         }
     }
