@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import org.lightscout.presentation.taskdetail.TaskDetailScreen
 import org.lightscout.presentation.tasklist.TaskListScreen
 
 sealed class Screen(val route: String) {
@@ -28,12 +29,8 @@ fun AppNavigation(
         }
 
         composable(Screen.TaskDetail.route) { backStackEntry ->
-            val taskId = backStackEntry.arguments?.getString("taskId")
-            // TODO: Implement TaskDetailScreen
-            // TaskDetailScreen(
-            //     taskId = taskId ?: "",
-            //     onNavigateBack = { navController.popBackStack() }
-            // )
+            val taskId = backStackEntry.arguments?.getString("taskId") ?: ""
+            TaskDetailScreen(taskId = taskId, onNavigateBack = { navController.popBackStack() })
         }
     }
 }
